@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import Header from './components/Header';
+import MainLayout from './components/layouts/MainLayout';
+import ResultComponent from './components/ResultComponent';
+import SearchComponent from './components/SearchComponent';
 
-function App() {
+const App = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [result, setResult] = useState({});
+
+  const searchHandler = async (data) => {
+    try {
+      setIsLoading(true);
+
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}?art=${data.artist}&mus=${data.song}&extra=relmus&apikey={${process.env.REACT_APP_API_KEY}}`
+      );
+
+      const parsered = await response.json();
+
+      setResult(parsered);
+      setIsLoading(false);
+    } catch (error) {
+      console.log('Error al buscar letra ->', error);
+      setIsLoading(false);
+      setResult({});
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header />
+      <main className="flex justify-center items-start">
+        <MainLayout>
+          <SearchComponent searchHandler={searchHandler} />
+          <ResultComponent isLoading={isLoading} result={result} />
+        </MainLayout>
+      </main>
+    </>
   );
-}
+};
 
 export default App;
