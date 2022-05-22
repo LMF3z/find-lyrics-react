@@ -4,7 +4,7 @@ import LoadingComponent from './LoadingComponent';
 const ResultComponent = ({ isLoading, result }) => {
   if (isLoading) {
     return (
-      <div className="shadow_custom container_card mt-5 lg:mt-10 min-h-20 text-center p-5 lg:p-10 text-lg lg:text-2xl sm:w-3/4">
+      <div className="shadow_custom container_card mt-5 lg:mt-10 min-h-20 text-center p-10 lg:p-10 text-lg lg:text-2xl sm:w-3/4">
         <div className="w-full h-20 flex justify-center items-center">
           <LoadingComponent />
         </div>
@@ -16,6 +16,10 @@ const ResultComponent = ({ isLoading, result }) => {
     <div className="shadow_custom container_card mt-5 lg:mt-10 min-h-20 text-center p-5 lg:p-10 text-lg lg:text-2xl sm:w-3/4">
       {result?.type === 'exact' ? (
         <div className="w-full h-full text-justify">
+          <h1 className="text-center text-3xl text-blue underline">
+            {result.mus[0].name}
+          </h1>
+          <br />
           {result.mus[0].text
             .split('\n')
             .map((item, index) =>
